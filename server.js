@@ -21,7 +21,7 @@ server.get("/api/:id", (req, res) => {
   const id = req.params.id;
 
   db("accounts")
-    .where({id})
+    .where({ id })
     .then(accts => res.status(200).json(accts))
     .catch(error =>
       res.status(500).json({
@@ -30,6 +30,17 @@ server.get("/api/:id", (req, res) => {
     );
 });
 
+server.post("/api", (req, res) => {
+  const data = req.body;
 
+  db("accounts")
+        .insert(data, "id")
+        .then(acct => {
+            res.status(200).json({Success: "The account was successfully created."})
+        })
+        .catch(error => res.status(500).json({
+            Failure: "The account creation was unsuccessful."
+        }))
+});
 
 module.exports = server;
