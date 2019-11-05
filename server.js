@@ -32,7 +32,6 @@ server.get("/api/:id", (req, res) => {
 
 server.post("/api", (req, res) => {
   const data = req.body;
-
   db("accounts")
         .insert(data, "id")
         .then(acct => {
@@ -42,5 +41,17 @@ server.post("/api", (req, res) => {
             Failure: "The account creation was unsuccessful."
         }))
 });
+
+server.put("/api/:id", (req, res) => {
+    const change = req.body;
+    db("accounts")
+          .where("id", req.params.id)
+          .update(change)
+          .then(acct => 
+              res.status(200).json({Success: "The account was successfully updated."}))
+          .catch(error => res.status(500).json({
+              Failure: "The account did not update."
+          }))
+  });
 
 module.exports = server;
