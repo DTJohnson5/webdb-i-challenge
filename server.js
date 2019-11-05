@@ -54,4 +54,18 @@ server.put("/api/:id", (req, res) => {
           }))
   });
 
+  server.delete('/api/:id', (req, res) => {
+      const id = req.params.id;
+
+      db('accounts')
+      .where("id", req.params.id)
+      .delete(id)
+      .then(res.status(200).json({
+          Success: "The account was successfully deleted."
+      }))
+      .catch(error => res.status(500).json({
+          Error: "That account ID was not found."
+      }))
+  });
+
 module.exports = server;
